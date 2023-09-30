@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/colors.dart';
+import 'package:todo/model/todo.dart';
+import 'package:todo/widgets/todo-item.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
+
+  final todoList = Todo.listTodo();
 
   @override
   Widget build(BuildContext context) {
@@ -15,32 +19,31 @@ class Home extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(0),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: myBlack,
-                    size: 20,
+            const SearchBox(),
+            Expanded(
+              child: ListView(
+                children: [
+                  Container(
+                    color: myBlue,
+                    margin: const EdgeInsets.only(
+                      top: 30,
+                      bottom: 20,
+                    ),
+                    child: const Text(
+                      'Your Todos',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                  prefixIconConstraints: BoxConstraints(
-                    maxHeight: 20,
-                    maxWidth: 25,
-                  ),
-                  border: InputBorder.none,
-                  hintText: 'Filter todo',
-                  hintStyle: TextStyle(color: myGray),
-                ),
+                  for (Todo todo in todoList)
+                    TodoItem(
+                      todo: todo,
+                    ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -65,6 +68,42 @@ class Home extends StatelessWidget {
             size: 30,
           )
         ],
+      ),
+    );
+  }
+}
+
+class SearchBox extends StatelessWidget {
+  const SearchBox({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: const TextField(
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0),
+          prefixIcon: Icon(
+            Icons.search,
+            color: myBlack,
+            size: 20,
+          ),
+          prefixIconConstraints: BoxConstraints(
+            maxHeight: 20,
+            maxWidth: 25,
+          ),
+          border: InputBorder.none,
+          hintText: 'Filter todo',
+          hintStyle: TextStyle(color: myGray),
+        ),
       ),
     );
   }
